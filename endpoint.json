@@ -1,0 +1,27 @@
+{
+    "label": "Fedex",
+    "name": "fedex",
+    "apiVersion": "v1",
+    "internal": false,
+    "configurationType": "GLOBAL",
+    "deployment": {
+        "profiles":[
+            {
+                "name": "default",
+                "label": "Default",
+                "memory": 256,
+                "description": "Default configuration"
+            }
+        ],
+        "allowMultipleInstances": false
+    },
+    "icon48": "https://storage.googleapis.com/static.slingrs.io/platform/endpoints/fedex.png",
+    "configurationHelpUrl": "/endpoints_fedex.html",
+    "status": "ACTIVE",
+    "stores": [],
+    "events": [],
+    "functions": [],
+    "scripts":[],
+    "listeners":[],
+    "configuration":[]
+}
