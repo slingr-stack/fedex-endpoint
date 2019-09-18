@@ -30,7 +30,7 @@ public class FedexEndpointTest {
                 .set(TrackClient.PACKAGE_IDENTIFIER_VALUE, trackNumber)
                 .set(TrackClient.PACKAGE_IDENTIFIER_TYPE, "TRACKING_NUMBER_OR_DOORTAG");
 
-        FedexEndpoint endpoint = new FedexEndpoint();
+        endpoint = new FedexEndpoint();
         Json res = endpoint.trackByPackageIdentifier(params);
 
         Assert.assertNotNull(res);
