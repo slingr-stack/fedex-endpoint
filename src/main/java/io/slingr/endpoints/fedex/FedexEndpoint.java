@@ -1,6 +1,7 @@
 package io.slingr.endpoints.fedex;
 
 import io.slingr.endpoints.Endpoint;
+import io.slingr.endpoints.framework.annotations.EndpointFunction;
 import io.slingr.endpoints.framework.annotations.EndpointProperty;
 import io.slingr.endpoints.framework.annotations.SlingrEndpoint;
 import io.slingr.endpoints.utils.Json;
@@ -34,12 +35,14 @@ public class FedexEndpoint extends Endpoint {
         this.fedexTrackClient = new TrackClient(url, accountNumber, meterNumber, key, password);
     }
 
-    public Json track(Json params) {
+    @EndpointFunction(name = "_trackByPackageIdentifier")
+    public Json trackByPackageIdentifier(Json params) {
 
-        if (params.contains(TrackClient.TRACKING_NUMBER)) {
+        if (params.contains(TrackClient.PACKAGE_IDENTIFIER_VALUE) && params.contains(TrackClient.PACKAGE_IDENTIFIER_TYPE)) {
 
-            String trackingNumber = params.string(TrackClient.TRACKING_NUMBER);
-            return Json.parse(this.fedexTrackClient.track(trackingNumber));
+            String value = params.string(TrackClient.PACKAGE_IDENTIFIER_VALUE);
+            String type = params.string(TrackClient.PACKAGE_IDENTIFIER_TYPE);
+            return Json.parse(this.fedexTrackClient.trackByPackageIdentifier(value, type));
         }
 
         logger.info("Tracking number can not be null");

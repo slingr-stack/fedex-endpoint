@@ -7,7 +7,8 @@ public class TrackClient {
 
     private static final Logger logger = Logger.getLogger(TrackClient.class);
 
-    public static final String TRACKING_NUMBER = "trackingNumber";
+    public static final String PACKAGE_IDENTIFIER_VALUE = "packageIdentifierValue";
+    public static final String PACKAGE_IDENTIFIER_TYPE = "packageIdentifierType";
 
     private String url;
     private String accountNumber;
@@ -23,7 +24,13 @@ public class TrackClient {
         this.password = password;
     }
 
-    public String track(String trackNumber) {
+    public String trackByPackageIdentifier(String packageIdentifierValue, String packageIdentifierType) {
+
+        TrackIdentifierType trackIdentifierType = TrackIdentifierType.fromString(packageIdentifierType);
+        return this.track(packageIdentifierValue, trackIdentifierType);
+    }
+
+    public String track(String packageIdentifierValue, TrackIdentifierType trackIdentifierType) {
 
         TrackRequest request = new TrackRequest();
 
@@ -35,9 +42,13 @@ public class TrackClient {
 
         TrackSelectionDetail selectionDetail = new TrackSelectionDetail();
         TrackPackageIdentifier packageIdentifier = new TrackPackageIdentifier();
-        packageIdentifier.setType(TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG);
+        if (trackIdentifierType == null) {
+            packageIdentifier.setType(TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG);
+        } else {
+            packageIdentifier.setType(trackIdentifierType);
+        }
 
-        packageIdentifier.setValue(trackNumber); // tracking number
+        packageIdentifier.setValue(packageIdentifierValue);
 
         selectionDetail.setPackageIdentifier(packageIdentifier);
         request.setSelectionDetails(new TrackSelectionDetail[]{selectionDetail});

@@ -1,58 +1,63 @@
 {
-    "label": "Fedex",
-    "name": "fedex",
-    "apiVersion": "v1",
-    "internal": false,
-    "configurationType": "GLOBAL",
-    "deployment": {
-        "profiles":[
-            {
-                "name": "default",
-                "label": "Default",
-                "memory": 256,
-                "description": "Default configuration"
-            }
-        ],
-        "allowMultipleInstances": false
+  "label": "Fedex",
+  "name": "fedex",
+  "apiVersion": "v1",
+  "internal": false,
+  "configurationType": "GLOBAL",
+  "deployment": {
+    "profiles": [
+      {
+        "name": "default",
+        "label": "Default",
+        "memory": 256,
+        "description": "Default configuration"
+      }
+    ],
+    "allowMultipleInstances": false
+  },
+  "icon48": "https://storage.googleapis.com/static.slingrs.io/platform/endpoints/fedex.png",
+  "configurationHelpUrl": "/endpoints_fedex.html",
+  "status": "ACTIVE",
+  "stores": [],
+  "events": [],
+  "functions": [
+    {
+      "label": "Track By Package Identifier",
+      "name": "_trackByPackageIdentifier"
+    }
+  ],
+  "scripts": [],
+  "listeners": [],
+  "configuration": [
+    {
+      "name": "url",
+      "label": "URL",
+      "type": "text",
+      "required": true
     },
-    "icon48": "https://storage.googleapis.com/static.slingrs.io/platform/endpoints/fedex.png",
-    "configurationHelpUrl": "/endpoints_fedex.html",
-    "status": "ACTIVE",
-    "stores": [],
-    "events": [],
-    "functions": [],
-    "scripts":[],
-    "listeners":[],
-    "configuration":[
-        {
-            "name": "url",
-            "label": "URL",
-            "type": "text",
-            "required": true
-        },
-        {
-            "name": "accountNumber",
-            "label": "Account Number",
-            "type": "text",
-            "required": true
-        },
-        {
-            "name": "meterNumber",
-            "label": "Meter Number",
-            "type": "text",
-            "required": true
-        },
-        {
-            "name": "key",
-            "label": "Key",
-            "type": "password",
-            "required": true
-        },
-        {
-            "name": "password",
-            "label": "Password",
-            "type": "password",
-            "required": true
-        }
-    ]
+    {
+      "name": "accountNumber",
+      "label": "Account Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "meterNumber",
+      "label": "Meter Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "key",
+      "label": "Key",
+      "type": "password",
+      "required": true
+    },
+    {
+      "name": "password",
+      "label": "Password",
+      "type": "password",
+      "required": true
+    }
+  ]
 }

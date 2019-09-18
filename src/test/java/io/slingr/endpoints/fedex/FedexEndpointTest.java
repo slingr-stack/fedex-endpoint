@@ -27,10 +27,11 @@ public class FedexEndpointTest {
         String trackNumber = "449044304137821";
 
         Json params = Json.map()
-                .set(TrackClient.TRACKING_NUMBER, trackNumber);
+                .set(TrackClient.PACKAGE_IDENTIFIER_VALUE, trackNumber)
+                .set(TrackClient.PACKAGE_IDENTIFIER_TYPE, "TRACKING_NUMBER_OR_DOORTAG");
 
         FedexEndpoint endpoint = new FedexEndpoint();
-        Json res = endpoint.track(params);
+        Json res = endpoint.trackByPackageIdentifier(params);
 
         Assert.assertNotNull(res);
 
