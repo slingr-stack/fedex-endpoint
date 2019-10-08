@@ -1,15 +1,12 @@
 endpoint.track = function (trackingNumber, callbackData, callbacks) {
     var options = {
-        packageIdentifierValue: trackingNumber,
-        packageIdentifierType: "TRACKING_NUMBER_OR_DOORTAG"
+        ref: {
+            'TRACKING_NUMBER_OR_DOORTAG': trackingNumber
+        }
     };
-    return endpoint._trackByPackageIdentifier(options, callbackData, callbacks);
+    return endpoint._track(options, callbackData, callbacks);
 };
 
-endpoint.trackByPackageIdentifier= function (value, identifierType, callbackData, callbacks) {
-    var options = {
-        packageIdentifierValue: value,
-        packageIdentifierType: identifierType
-    };
-    return endpoint._trackByPackageIdentifier(options, callbackData, callbacks);
+endpoint.trackByReference = function (options, callbackData, callbacks) {
+    return endpoint._track(options, callbackData, callbacks);
 };

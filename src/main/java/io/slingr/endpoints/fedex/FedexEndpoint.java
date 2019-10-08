@@ -35,18 +35,10 @@ public class FedexEndpoint extends Endpoint {
         this.fedexTrackClient = new TrackClient(url, accountNumber, meterNumber, key, password);
     }
 
-    @EndpointFunction(name = "_trackByPackageIdentifier")
-    public Json trackByPackageIdentifier(Json params) {
+    @EndpointFunction(name = "_track")
+    public Json track(Json params) {
 
-        if (params.contains(TrackClient.PACKAGE_IDENTIFIER_VALUE) && params.contains(TrackClient.PACKAGE_IDENTIFIER_TYPE)) {
-
-            String value = params.string(TrackClient.PACKAGE_IDENTIFIER_VALUE);
-            String type = params.string(TrackClient.PACKAGE_IDENTIFIER_TYPE);
-            return Json.parse(this.fedexTrackClient.trackByPackageIdentifier(value, type));
-        }
-
-        logger.info("Tracking number can not be null");
-        return null;
+        return Json.parse(this.fedexTrackClient.track(params));
 
     }
 

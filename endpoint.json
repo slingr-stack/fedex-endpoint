@@ -22,8 +22,8 @@
   "events": [],
   "functions": [
     {
-      "label": "Track By Package Identifier",
-      "name": "_trackByPackageIdentifier"
+      "label": "Track sending params",
+      "name": "_track"
     }
   ],
   "scripts": [

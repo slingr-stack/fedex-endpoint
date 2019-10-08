@@ -1,14 +1,25 @@
 package io.slingr.endpoints.fedex;
 
 import com.fedex.ws.track.v18.*;
+import io.slingr.endpoints.utils.Json;
 import org.apache.log4j.Logger;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrackClient {
 
     private static final Logger logger = Logger.getLogger(TrackClient.class);
 
-    public static final String PACKAGE_IDENTIFIER_VALUE = "packageIdentifierValue";
-    public static final String PACKAGE_IDENTIFIER_TYPE = "packageIdentifierType";
+    public static final String REF = "ref";
+    public static final String SHIPMENT_ACCOUNT_NUMBER = "shipmentAccountNumber";
+    public static final String SHIP_DATE = "shipDate";
+    public static final String SHIP_DATE_BEGIN = "shipDateBegin";
+    public static final String SHIP_DATE_END = "shipDateEnd";
+    public static final String POSTAL_CODE = "postalCode";
+    public static final String COUNTRY = "country";
+    public static final String COUNTRY_CODE = "countryCode";
 
     private String url;
     private String accountNumber;
@@ -24,13 +35,7 @@ public class TrackClient {
         this.password = password;
     }
 
-    public String trackByPackageIdentifier(String packageIdentifierValue, String packageIdentifierType) {
-
-        TrackIdentifierType trackIdentifierType = TrackIdentifierType.fromString(packageIdentifierType);
-        return this.track(packageIdentifierValue, trackIdentifierType);
-    }
-
-    public String track(String packageIdentifierValue, TrackIdentifierType trackIdentifierType) {
+    public String track(Json json) {
 
         TrackRequest request = new TrackRequest();
 
@@ -40,18 +45,62 @@ public class TrackClient {
         VersionId versionId = new VersionId("trck", 18, 0, 0);
         request.setVersion(versionId);
 
-        TrackSelectionDetail selectionDetail = new TrackSelectionDetail();
-        TrackPackageIdentifier packageIdentifier = new TrackPackageIdentifier();
-        if (trackIdentifierType == null) {
-            packageIdentifier.setType(TrackIdentifierType.TRACKING_NUMBER_OR_DOORTAG);
-        } else {
-            packageIdentifier.setType(trackIdentifierType);
+        List<TrackSelectionDetail> selDetails = new ArrayList<>();
+        if (json.json(REF) != null) {
+
+            Json ref = json.json(REF);
+
+            for (String key : ref.keys()) {
+                TrackPackageIdentifier packageIdentifier = new TrackPackageIdentifier();
+                packageIdentifier.setType(TrackIdentifierType.fromString(key));
+                packageIdentifier.setValue(ref.string(key));
+
+                TrackSelectionDetail selectionDetail = new TrackSelectionDetail();
+
+                selectionDetail.setPackageIdentifier(packageIdentifier);
+
+                if (json.string(SHIPMENT_ACCOUNT_NUMBER) != null) {
+                    selectionDetail.setShipmentAccountNumber(json.string(SHIPMENT_ACCOUNT_NUMBER));
+                }
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                    if (json.string(SHIP_DATE) != null) {
+                        selectionDetail.setShipDateRangeBegin(sdf.parse(json.string(SHIP_DATE)));
+                        selectionDetail.setShipDateRangeEnd(sdf.parse(json.string(SHIP_DATE)));
+                    } else {
+                        if (json.string(SHIP_DATE_BEGIN) != null) {
+                            selectionDetail.setShipDateRangeBegin(sdf.parse(json.string(SHIP_DATE_BEGIN)));
+                        }
+                        if (json.string(SHIP_DATE_END) != null) {
+                            selectionDetail.setShipDateRangeEnd(sdf.parse(json.string(SHIP_DATE_END)));
+                        }
+                    }
+
+                    if (json.string(POSTAL_CODE) != null || json.string(COUNTRY) != null || json.string(COUNTRY_CODE) != null) {
+                        Address address = new Address();
+                        if (json.string(POSTAL_CODE) != null) {
+                            address.setPostalCode(json.string(POSTAL_CODE));
+                        }
+                        if (json.string(COUNTRY) != null) {
+                            address.setCountryName(json.string(COUNTRY));
+                        }
+                        if (json.string(COUNTRY_CODE) != null) {
+                            address.setCountryCode(json.string(COUNTRY_CODE));
+                        }
+                        selectionDetail.setDestination(address);
+                    }
+
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+
+                selDetails.add(selectionDetail);
+            }
         }
 
-        packageIdentifier.setValue(packageIdentifierValue);
-
-        selectionDetail.setPackageIdentifier(packageIdentifier);
-        request.setSelectionDetails(new TrackSelectionDetail[]{selectionDetail});
+        request.setSelectionDetails(selDetails.toArray(new TrackSelectionDetail[selDetails.size()]));
         TrackRequestProcessingOptionType processingOption = TrackRequestProcessingOptionType.INCLUDE_DETAILED_SCANS;
         request.setProcessingOptions(new TrackRequestProcessingOptionType[]{processingOption});
 
@@ -72,6 +121,7 @@ public class TrackClient {
         }
         return null;
     }
+
 
     private ClientDetail createClientDetail(String accountNumberParam, String meterNumberParam) {
 
