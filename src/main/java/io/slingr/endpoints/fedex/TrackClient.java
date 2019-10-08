@@ -14,9 +14,9 @@ public class TrackClient {
 
     public static final String REF = "ref";
     public static final String SHIPMENT_ACCOUNT_NUMBER = "shipmentAccountNumber";
-    public static final String SHIP_DATE = "shipDate";
-    public static final String SHIP_DATE_BEGIN = "shipDateBegin";
-    public static final String SHIP_DATE_END = "shipDateEnd";
+    public static final String SHIP_DATE_RANGE = "shipDateRange";
+    public static final String SHIP_DATE_RANGE_BEGIN = "shipDateRangeRangeBegin";
+    public static final String SHIP_DATE_RANGE_END = "shipDateRangeEnd";
     public static final String POSTAL_CODE = "postalCode";
     public static final String COUNTRY = "country";
     public static final String COUNTRY_CODE = "countryCode";
@@ -66,15 +66,15 @@ public class TrackClient {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                    if (json.string(SHIP_DATE) != null) {
-                        selectionDetail.setShipDateRangeBegin(sdf.parse(json.string(SHIP_DATE)));
-                        selectionDetail.setShipDateRangeEnd(sdf.parse(json.string(SHIP_DATE)));
+                    if (json.string(SHIP_DATE_RANGE) != null) {
+                        selectionDetail.setShipDateRangeBegin(sdf.parse(json.string(SHIP_DATE_RANGE)));
+                        selectionDetail.setShipDateRangeEnd(sdf.parse(json.string(SHIP_DATE_RANGE)));
                     } else {
-                        if (json.string(SHIP_DATE_BEGIN) != null) {
-                            selectionDetail.setShipDateRangeBegin(sdf.parse(json.string(SHIP_DATE_BEGIN)));
+                        if (json.string(SHIP_DATE_RANGE_BEGIN) != null) {
+                            selectionDetail.setShipDateRangeBegin(sdf.parse(json.string(SHIP_DATE_RANGE_BEGIN)));
                         }
-                        if (json.string(SHIP_DATE_END) != null) {
-                            selectionDetail.setShipDateRangeEnd(sdf.parse(json.string(SHIP_DATE_END)));
+                        if (json.string(SHIP_DATE_RANGE_END) != null) {
+                            selectionDetail.setShipDateRangeEnd(sdf.parse(json.string(SHIP_DATE_RANGE_END)));
                         }
                     }
 

@@ -46,8 +46,8 @@ public class FedexEndpointTest {
                 .set("GROUND_SHIPMENT_ID", "DMWsGWdnN"));
         params.set(TrackClient.SHIPMENT_ACCOUNT_NUMBER, "510088000");
 //        params.set(TrackClient.SHIP_DATE, "2018-08-15");
-        params.set(TrackClient.SHIP_DATE_BEGIN, "2018-08-15");
-        params.set(TrackClient.SHIP_DATE_END, "2018-08-15");
+        params.set(TrackClient.SHIP_DATE_RANGE_BEGIN, "2018-08-15");
+        params.set(TrackClient.SHIP_DATE_RANGE_END, "2018-08-15");
 //        params.set(TrackClient.POSTAL_CODE, "33126");
 //        params.set(TrackClient.COUNTRY, "United States");
 
@@ -69,8 +69,8 @@ public class FedexEndpointTest {
                 .set(TrackIdentifierType.PURCHASE_ORDER.toString(), "P218101_004154359"));
         params.set(TrackClient.SHIPMENT_ACCOUNT_NUMBER, "510088000");
 //        params.set(TrackClient.SHIP_DATE, "2018-08-15");
-        params.set(TrackClient.SHIP_DATE_BEGIN, "2018-08-15");
-        params.set(TrackClient.SHIP_DATE_END, "2018-08-15");
+        params.set(TrackClient.SHIP_DATE_RANGE_BEGIN, "2018-08-15");
+        params.set(TrackClient.SHIP_DATE_RANGE_END, "2018-08-15");
         params.set(TrackClient.POSTAL_CODE, "33126");
         params.set(TrackClient.COUNTRY, "United States");
 
